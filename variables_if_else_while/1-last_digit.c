@@ -1,6 +1,6 @@
 #include <stdlib.h>
 #include <time.h>
-#include <stdio.h> /* مكتبة الطباعة حقتنا */
+#include <stdio.h>
 
 /**
  * main - Prints the last digit of a randomly generated number
@@ -11,26 +11,29 @@
 int main(void)
 {
 	int n;
-	int last_digit; /* سوينا صندوق جديد عشان نحفظ فيه الخانة الأخيرة */
+	int last_digit;
 
 	srand(time(0));
 	n = rand() - RAND_MAX / 2;
 
-	/* هنا السحر: سحبنا الخانة الأخيرة وحطيناها في صندوقنا الجديد */
 	last_digit = n % 10;
 
-	/* الحين نختبر الصندوق الجديد حقنا */
 	if (last_digit > 5)
 	{
-		printf("Last digit of %d is %d and is greater than 5\n", n, last_digit);
+		/* قسمنا المتغيرات في سطر جديد عشان ما نتجاوز 80 حرف */
+		printf("Last digit of %d is %d and is greater than 5\n",
+			n, last_digit);
 	}
 	else if (last_digit == 0)
 	{
+		/* هذا السطر قصير فما يحتاج نقسمه */
 		printf("Last digit of %d is %d and is 0\n", n, last_digit);
 	}
 	else
 	{
-		printf("Last digit of %d is %d and is less than 6 and not 0\n", n, last_digit);
+		/* الجملة هنا مرة طويلة، فقسمناها على أمر طباعة مرتين */
+		printf("Last digit of %d is %d and is less than 6 ", n, last_digit);
+		printf("and not 0\n");
 	}
 
 	return (0);
