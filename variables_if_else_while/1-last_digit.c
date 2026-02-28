@@ -20,20 +20,17 @@ int main(void)
 
 	if (last_digit > 5)
 	{
-		/* قسمنا المتغيرات في سطر جديد عشان ما نتجاوز 80 حرف */
-		printf("Last digit of %d is %d and is greater than 5\n",
-			n, last_digit);
+		printf("Last digit of %d is %d ", n, last_digit);
+		printf("and is greater than 5\n");
 	}
 	else if (last_digit == 0)
 	{
-		/* هذا السطر قصير فما يحتاج نقسمه */
 		printf("Last digit of %d is %d and is 0\n", n, last_digit);
 	}
 	else
 	{
-		/* الجملة هنا مرة طويلة، فقسمناها على أمر طباعة مرتين */
-		printf("Last digit of %d is %d and is less than 6 ", n, last_digit);
-		printf("and not 0\n");
+		printf("Last digit of %d is %d ", n, last_digit);
+		printf("and is less than 6 and not 0\n");
 	}
 
 	return (0);
