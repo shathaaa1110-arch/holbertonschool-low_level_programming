@@ -13,6 +13,6 @@ int _isupper(int c)
 	{
 		return (1); /* إذا صح، رجع 1 */
 	}
-	
+
 	return (0); /* غير كذا، رجع 0 */
 }
