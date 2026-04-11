@@ -20,7 +20,6 @@ int (*get_op_func(char *s))(int, int)
 	int i;
 
 	i = 0;
-	/* نبحث في المصفوفة طالما ما وصلنا للنهاية، والعلامة ما طابقت المدخل */
 	while (ops[i].op != NULL && *(ops[i].op) != *s)
 	{
 		i++;
