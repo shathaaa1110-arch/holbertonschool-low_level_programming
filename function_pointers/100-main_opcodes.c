@@ -31,7 +31,6 @@ int main(int argc, char *argv[])
 
 	for (i = 0; i < bytes; i++)
 	{
-		/* استخدام & 0xFF يضمن طباعة بايت واحد فقط بدون أصفار إضافية */
 		printf("%02x", arr[i] & 0xFF);
 		if (i != bytes - 1)
 			printf(" ");
