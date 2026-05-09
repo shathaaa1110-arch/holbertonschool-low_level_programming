@@ -11,50 +11,43 @@
  */
 int hash_table_set(hash_table_t *ht, const char *key, const char *value)
 {
-	hash_node_t *new_node, *temp;
-	unsigned long int index;
-	char *value_copy;
+	hash_node_t *n, *temp;
+	char *v_copy;
+	unsigned long int i;
 
 	if (ht == NULL || key == NULL || *key == '\0' || value == NULL)
 		return (0);
 
-	value_copy = strdup(value);
-	if (value_copy == NULL)
+	v_copy = strdup(value);
+	if (v_copy == NULL)
 		return (0);
 
-	index = key_index((const unsigned char *)key, ht->size);
-	temp = ht->array[index];
-
-	/* Check if key exists, update value if it does */
-	while (temp != NULL)
+	i = key_index((const unsigned char *)key, ht->size);
+	for (temp = ht->array[i]; temp; temp = temp->next)
 	{
 		if (strcmp(temp->key, key) == 0)
 		{
 			free(temp->value);
-			temp->value = value_copy;
+			temp->value = v_copy;
 			return (1);
 		}
-		temp = temp->next;
 	}
 
-	/* Key doesn't exist, create new node */
-	new_node = malloc(sizeof(hash_node_t));
-	if (new_node == NULL)
+	n = malloc(sizeof(hash_node_t));
+	if (n == NULL)
 	{
-		free(value_copy);
+		free(v_copy);
 		return (0);
 	}
-	new_node->key = strdup(key);
-	if (new_node->key == NULL)
+	n->key = strdup(key);
+	if (n->key == NULL)
 	{
-		free(value_copy);
-		free(new_node);
+		free(n);
+		free(v_copy);
 		return (0);
 	}
-	new_node->value = value_copy;
-	/* Insert at the beginning of the list */
-	new_node->next = ht->array[index];
-	ht->array[index] = new_node;
-
+	n->value = v_copy;
+	n->next = ht->array[i];
+	ht->array[i] = n;
 	return (1);
 }
