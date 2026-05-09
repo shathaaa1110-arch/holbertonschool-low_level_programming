@@ -15,7 +15,6 @@ shash_table_t *shash_table_create(unsigned long int size)
 	ht = malloc(sizeof(shash_table_t));
 	if (ht == NULL)
 		return (NULL);
-
 	ht->size = size;
 	ht->shead = NULL;
 	ht->stail = NULL;
@@ -28,6 +27,44 @@ shash_table_t *shash_table_create(unsigned long int size)
 	for (i = 0; i < size; i++)
 		ht->array[i] = NULL;
 	return (ht);
+}
+
+/**
+ * insert_to_sorted_list - Helper to insert node into sorted linked list
+ * @ht: Hash table
+ * @new: New node to insert
+ */
+void insert_to_sorted_list(shash_table_t *ht, shash_node_t *new)
+{
+	shash_node_t *tmp;
+
+	if (ht->shead == NULL)
+	{
+		new->sprev = NULL;
+		new->snext = NULL;
+		ht->shead = new;
+		ht->stail = new;
+	}
+	else if (strcmp(ht->shead->key, new->key) > 0)
+	{
+		new->sprev = NULL;
+		new->snext = ht->shead;
+		ht->shead->sprev = new;
+		ht->shead = new;
+	}
+	else
+	{
+		tmp = ht->shead;
+		while (tmp->snext != NULL && strcmp(tmp->snext->key, new->key) < 0)
+			tmp = tmp->snext;
+		new->sprev = tmp;
+		new->snext = tmp->snext;
+		if (tmp->snext == NULL)
+			ht->stail = new;
+		else
+			tmp->snext->sprev = new;
+		tmp->snext = new;
+	}
 }
 
 /**
@@ -76,33 +113,7 @@ int shash_table_set(shash_table_t *ht, const char *key, const char *value)
 	new->value = v_copy;
 	new->next = ht->array[idx];
 	ht->array[idx] = new;
-	if (ht->shead == NULL)
-	{
-		new->sprev = NULL;
-		new->snext = NULL;
-		ht->shead = new;
-		ht->stail = new;
-	}
-	else if (strcmp(ht->shead->key, key) > 0)
-	{
-		new->sprev = NULL;
-		new->snext = ht->shead;
-		ht->shead->sprev = new;
-		ht->shead = new;
-	}
-	else
-	{
-		tmp = ht->shead;
-		while (tmp->snext != NULL && strcmp(tmp->snext->key, key) < 0)
-			tmp = tmp->snext;
-		new->sprev = tmp;
-		new->snext = tmp->snext;
-		if (tmp->snext == NULL)
-			ht->stail = new;
-		else
-			tmp->snext->sprev = new;
-		tmp->snext = new;
-	}
+	insert_to_sorted_list(ht, new);
 	return (1);
 }
 
